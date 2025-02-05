@@ -1,36 +1,17 @@
 from fastapi.responses import JSONResponse
-# from pydantic import BaseModel
 from api.db.data import tasks
 from api.models.model import Item
 from fastapi import APIRouter,HTTPException
-# from datetime import datetime
 import uuid
-# from fastapi import HTTPException
-# from pymongo import MongoClient
 from bson import ObjectId
 
 router = APIRouter()
-# class Item(BaseModel):
-#     name: str
-#     age:int
-#     department:str
-#     salary:float
-#     due_date:datetime  
-#     status: str = "New"  #ult value
-#     uid: str = None  # Will be set dynamically
-
-
-
 @router.post("/tasks")
 
 def create_tasks(payload:Item):
-    print(payload)
-
  # Assign values if they are missing
     if payload.uid is None:
         payload.uid = str(uuid.uuid4())
-
-        print("After:", payload)
         task_data = payload.dict() 
 
     try:
@@ -40,37 +21,23 @@ def create_tasks(payload:Item):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-
-
-
 @router.get("/all")
-
 def view_all_tasks(user_id: str):
-
-
-    print("user_id----", user_id)
-    
     try:
         user = tasks.find_one({"_id": ObjectId(user_id)})
         
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid user_id")
-    print("user------", user)
+   
     if user:
         user_id = str(user.get("_id"))
         return {"user_id": user_id, "name": user.get("name"), "age": user.get("age"),"department":user.get("department"),"salary":user.get("salary")}
     else:
         raise HTTPException(status_code=404, detail="User not found")
     
-
-
 @router.put("/{task_uid}")
-
 def update_tasks(user_id: str, payload: Item):
     try:
-        print("Updating user_id:", user_id)
-
         # Convert user_id to ObjectId
         object_id = ObjectId(user_id)
 
