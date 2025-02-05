@@ -4,23 +4,11 @@ from api.db.data import users
 from datetime import datetime
 from bson import ObjectId
 
-
-# import uuid
-
-
 router=APIRouter()
 
-
 @router.post("/users")
-
 def create_user(payload: Items):
-    print(payload)
-    user_dict = payload.dict()
-
-    
-    # user_dict['uid'] = str(uuid.uuid4())
-    # user_dict['created_at'] = datetime.datetime.now()
-    
+    user_dict = payload.dict() 
     try:
         result=users.insert_one(user_dict)
         user_dict["_id"] = str(result.inserted_id)
@@ -28,41 +16,21 @@ def create_user(payload: Items):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-
-    # return{
-    #     "name":Item["name"],
-    #     "age":Item["age"],
-    #     "department":Item["department"],
-    #     "salary":Item["salary"]
-    # }
-
-
 @router.get("/get-user/{user_id}")
-
-def get_user(user_id: str):
-
-
-    print("user_id----", user_id)
-    
+def get_user(user_id: str):  
     try:
-        user = users.find_one({"_id": ObjectId(user_id)})
-        
+        user = users.find_one({"_id": ObjectId(user_id)})    
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid user_id")
-    print("user------", user)
     if user:
         user_id = str(user.get("_id"))
         return {"user_id": user_id, "name": user.get("name"), "email": user.get("email")}
     else:
         raise HTTPException(status_code=404, detail="User not found")
     
-
-
 @router.put("/update-user/{user_id}")
 def update_user(user_id: str, payload: Items):
     try:
-        print("Updating user_id:", user_id)
-
         # Convert user_id to ObjectId
         object_id = ObjectId(user_id)
 
@@ -84,12 +52,9 @@ def update_user(user_id: str, payload: Items):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error updating user: {str(e)}")
     
-
 @router.delete("/delete-user/{user_id}")
 def delete_user(user_id: str):
     try:
-        print("Deleting user_id:", user_id)
-
         # Convert user_id to ObjectId
         object_id = ObjectId(user_id)
 
