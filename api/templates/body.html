@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>body</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body>
+
+    <div>
+        <main class="flex-1 p-6">
+          <div class="flex justify-between items-center px-9">
+              <h1 class="text-2xl font-semibold" id="greeting"></h1>
+              <button class="bg-gray-200 px-4 py-2 rounded-lg">
+                  <select>
+                      <option value="option1"> Today </option>
+                      <option value="option2">Tomorrow</option>
+                      <option value=""> Yesteraday</option>
+                  </select>
+               </button>
+           </div>
+           <div class="flex  items-center px-9">
+             <span id="time" class="text-gray-500"></span>
+             <p class="text-gray-500 font-bold px-2" id="date"></p>
+           </div>
+           <div class="flex justify-between items-center mt-20">
+            <button class="border border-black-300 rounded-full h-10 w-90 bg-slate-600 text-white" id="openModal">+ create new task
+            </button>
+           </div>
+           <!-- Popup Modal -->
+         <div id="modal" class="hidden fixed inset-0 flex items-center justify-center  bg-opacity-50">
+             <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+             <h2 class="text-lg font-bold mb-4">Create new task</h2>
+
+            <!-- Form -->
+            <form>
+                <!-- Date Input -->
+                <label for="dateInput" class="block text-sm font-medium text-gray-700">Select Date:</label>
+                <input type="date" id="dateInput" class="w-full p-2 mt-1 border rounded-md">
+
+                <label for="fromTime" class="block text-sm font-medium text-gray-700">From Time:</label>
+                <input type="time" id="fromTime" class="w-full p-2 mt-1 border rounded-md">
+
+                <!-- To Time -->
+                <label for="toTime" class="block text-sm font-medium text-gray-700 mt-3">To Time:</label>
+                <input type="time" id="toTime" class="w-full p-2 mt-1 border rounded-md">
+
+                <!-- Error Message -->
+                <p id="errorText" class="text-red-500 text-sm mt-2"></p>
+
+
+                <!-- Select Input -->
+                <label for="selectInput" class="block text-sm font-medium text-gray-700 mt-3">Select Option:</label>
+                <select id="selectInput" class="w-full p-2 mt-1 border rounded-md">
+                    <option value="">Work</option>
+                    <option value="">Diet</option>
+                    <option value="">List of books</option>
+                    <option value="">Road trip list</option>
+                    <option value="">personal</option>
+                </select>
+
+                <!-- Buttons -->
+                <div class="mt-4 flex justify-between">
+                    <button id="closeModal" type="button" class="px-4 py-2 bg-red-500 text-white rounded-md">Close</button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md">Submit</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+            
+    
+        </main>
+    </div>
+    <script>
+        function getGreeting() {
+          const hours = new Date().getHours();
+          if (hours < 12) return "Good Morning! ☀️";
+          else if (hours < 18) return "Good Afternoon! 🌞";
+          else return "Good Evening! 🌙";
+       }
+      
+       // Update greeting on page load
+       document.addEventListener("DOMContentLoaded", function () {
+          const greetingElement = document.getElementById("greeting");
+          if (greetingElement) {
+              greetingElement.textContent = getGreeting();
+          }
+      
+          // // Add click event to refresh button
+          // document.getElementById("refreshBtn").addEventListener("click", function () {
+          //     greetingElement.textContent = getGreeting();
+          // });
+       });
+
+       function updateDateTime() {
+           const now = new Date();
+            // Get day, date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+             const dateString = now.toLocaleDateString(undefined, options);
+             const timeString = now.toLocaleTimeString();
+             // Update elements
+              document.getElementById("date").textContent = dateString;
+              document.getElementById("time").textContent = timeString;
+              
+          }
+          // Update time every second
+          setInterval(updateDateTime, 1000);
+          // Initial call to set values on page load
+          document.addEventListener("DOMContentLoaded", updateDateTime);
+
+                 //popup
+          document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("modal");
+    const openModalBtn = document.getElementById("openModal");
+    const closeModalBtn = document.getElementById("closeModal");
+    const dateInput = document.getElementById("dateInput");
+    const fromTimeInput = document.getElementById("fromTime");
+    const toTimeInput = document.getElementById("toTime");
+    const errorText = document.getElementById("errorText");
+    
+
+
+    function validateTime() {
+        const fromTime = fromTimeInput.value;
+        const toTime = toTimeInput.value;
+
+        if (fromTime && toTime && fromTime >= toTime) {
+            errorText.textContent = "End time must be after start time!";
+            toTimeInput.classList.add("border-red-500");
+        } else {
+            errorText.textContent = "";
+            toTimeInput.classList.remove("border-red-500");
+        }
+    }
+
+    fromTimeInput.addEventListener("change", validateTime);
+    toTimeInput.addEventListener("change", validateTime);
+
+    // Open modal
+    openModalBtn.addEventListener("click", () => {
+        modal.classList.remove("hidden");
+    });
+
+    // Close modal
+    closeModalBtn.addEventListener("click", () => {
+        modal.classList.add("hidden");
+    });
+
+    // Set default date & time
+    function setDefaultDateTime() {
+        const now = new Date();
+        dateInput.value = now.toISOString().split("T")[0]; // YYYY-MM-DD
+        timeInput.value = now.toTimeString().slice(0, 5); // HH:MM
+    }
+
+    setDefaultDateTime(); // Set initial values
+});
+
+  
+
+      
+     </script>   
+
+  
+</body>
+</html>

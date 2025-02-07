@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    
+</head>
+<body>
+
+      <div class="grid grid-cols-4 gap-0 h-screen">
+          <div class=" bg-pink-200 w-110">
+            <h2 class="text-xl font-semibold mb-4 mt-4 ml-4">Private</h2>
+            <ul class="space-y-3">
+                <li class="flex items-center justify-between  hover:bg-red-100 rounded-lg h-15 w-100">
+                    <span class="flex items-center gap-2 ml-6"><span>🏠</span> Home</span> <span class="text-gray-500 mr-4">8</span>
+                </li>
+
+
+                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
+                    <span class="flex items-center gap-2 ml-6"><span>✅</span> Completed</span> <span class="text-gray-500 mr-4">16</span>
+                </li>
+
+                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
+                    <span class="flex items-center gap-2 text-black-500 ml-6">🟣 Personal</span> <span class="text-gray-500 mr-4">4</span>
+                </li>
+
+                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
+                    <span class="flex items-center gap-2 text-black-500 ml-6">💼 Work</span> <span class="text-gray-500 mr-4">6</span>
+                </li>
+
+                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
+                    <span class="flex items-center gap-2 ml-6">💪 Diet</span> <span class="text-gray-500 mr-4">3</span>
+                </li>
+
+                <li class="flex items-center justify-between space-y-3 hover:bg-red-100 rounded-lg h-15 w-100">
+                    <span class="flex items-center gap-2 ml-6">📚 List of Book</span> <span class="text-gray-500 mr-4">8</span>
+                </li>
+
+                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
+                    <span class="flex items-center gap-2 ml-6">🚗 Road trip list</span> <span class="text-gray-500 mr-4">6</span>
+                </li>
+
+                </ul>
+
+                <button class="mt-4 ml-2 w-100 flex items-center px-9 h-10 border border-black-300 rounded-lg hover:bg-gray-200">
+                    +Create new list
+                </button>
+
+                <h3 class="text-2xl font-medium ml-4 mt-2">Group</h3>
+
+                <div class="flex flex-row space-y-3">
+            
+                   <div class="flex flex-col flex-wrap p-4 ">
+                       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI4-PV5TZQtSuiqrZ0RGKzeT8UVgSmR4HGKg&s"  class="w-35 h-25 gap-9 mr-4">
+                   
+                        <p class="mt-2 text-lg font-semibold">CRM</p>
+                      
+                   </div>
+                   <div class="flex flex-col flex-wrap p-4 ">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc0F0AS9xArnSXso7e19t6Vw1gyH9vIEF86w&s"  class="w-35 h-25 gap-9 ml-10">
+                        <p class=" mt-2 text-lg font-semibold text-center">stark.ai</p>
+                   </div>
+                </div>
+
+                <button class="mt-4 ml-2 w-100 flex items-center px-9  h-10 border border-black-300 rounded-lg hover:bg-gray-200">
+                    + Create new group
+                </button>
+               
+          </div>
+          <div class=" col-span-3 bg-white-500 ml-10">
+               {%include 'body.html'%}
+          </div> 
+        </div>  
+    
+</body>
+</html>
