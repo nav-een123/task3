@@ -6,9 +6,11 @@ import uuid
 from bson import ObjectId
 
 router = APIRouter()
+
 @router.post("/tasks")
 
 def create_tasks(payload:Item):
+
  # Assign values if they are missing
     if payload.uid is None:
         payload.uid = str(uuid.uuid4())
@@ -21,8 +23,11 @@ def create_tasks(payload:Item):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @router.get("/all")
+
 def view_all_tasks(user_id: str):
+    
     try:
         user = tasks.find_one({"_id": ObjectId(user_id)})
         
@@ -36,7 +41,9 @@ def view_all_tasks(user_id: str):
         raise HTTPException(status_code=404, detail="User not found")
     
 @router.put("/{task_uid}")
+
 def update_tasks(user_id: str, payload: Item):
+    
     try:
         # Convert user_id to ObjectId
         object_id = ObjectId(user_id)
