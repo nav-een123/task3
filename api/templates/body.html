@@ -1,168 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>body</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body>
 
     <div>
         <main class="flex-1 p-6">
-          <div class="flex justify-between items-center px-9">
-              <h1 class="text-2xl font-semibold" id="greeting"></h1>
-              <button class="bg-gray-200 px-4 py-2 rounded-lg">
-                  <select>
-                      <option value="option1"> Today </option>
-                      <option value="option2">Tomorrow</option>
-                      <option value=""> Yesteraday</option>
-                  </select>
-               </button>
-           </div>
-           <div class="flex  items-center px-9">
-             <span id="time" class="text-gray-500"></span>
-             <p class="text-gray-500 font-bold px-2" id="date"></p>
-           </div>
-           <div class="flex justify-between items-center mt-20">
-            <button class="border border-black-300 rounded-full h-10 w-90 bg-slate-600 text-white" id="openModal">+ create new task
-            </button>
-           </div>
-           <!-- Popup Modal -->
-         <div id="modal" class="hidden fixed inset-0 flex items-center justify-center  bg-opacity-50">
-             <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-             <h2 class="text-lg font-bold mb-4">Create new task</h2>
+            <div class="flex justify-between items-center px-9">
+                <h1 class="text-2xl font-semibold" id="greeting"></h1>
+                <button class="bg-gray-200 px-4 py-2 rounded-lg">
+                    <select id="inputselect">
+                        <option value="option1"> Today </option>
+                        <option value="option2">Tomorrow</option>
+                        <option value="option3"> Yesteraday</option>
+                    </select>
+                </button>
+            </div>
+            <div class="flex  items-center px-9">
+                <span id="time" class="text-gray-500"></span>
+                <p class="text-gray-500 font-bold px-2" id="date"></p>
+            </div>
+            <div class="flex justify-between items-center mt-20">
+                <button class="border border-black-300 rounded-lg h-10 w-150 bg-slate-600 text-white py-2 px-4"
+                    id="openModal">
+                    create new task
+                </button>
+            </div>
+            <!-- Popup Modal -->
+            <div id="modal" class="hidden fixed inset-0 flex items-center justify-center  bg-opacity-50">
+                <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <h2 class="text-lg font-bold mb-4">Create new task</h2>
 
-            <!-- Form -->
-            <form>
-                <!-- Date Input -->
-                <label for="dateInput" class="block text-sm font-medium text-gray-700">Select Date:</label>
-                <input type="date" id="dateInput" class="w-full p-2 mt-1 border rounded-md">
+                    <!-- Form -->
+                    <form>
 
-                <label for="fromTime" class="block text-sm font-medium text-gray-700">From Time:</label>
-                <input type="time" id="fromTime" class="w-full p-2 mt-1 border rounded-md">
+                        <!-- Date Input -->
+                        <label for="dateInput" class="block text-sm font-medium text-gray-700">Select Date:</label>
+                        <input type="date" id="dateInput" name="date" class="w-full p-2 mt-1 border rounded-md">
 
-                <!-- To Time -->
-                <label for="toTime" class="block text-sm font-medium text-gray-700 mt-3">To Time:</label>
-                <input type="time" id="toTime" class="w-full p-2 mt-1 border rounded-md">
+                        <!-- From Time -->
+                        <label for="fromTime" class="block text-sm font-medium text-gray-700">From Time:</label>
+                        <input type="time" id="fromTime" name="from_time" class="w-full p-2 mt-1 border rounded-md">
 
-                <!-- Error Message -->
-                <p id="errorText" class="text-red-500 text-sm mt-2"></p>
+                        <!-- To Time -->
+                        <label for="toTime" class="block text-sm font-medium text-gray-700 mt-3">To Time:</label>
+                        <input type="time" id="toTime" name="to_time" class="w-full p-2 mt-1 border rounded-md">
 
+                        <!-- Error Message -->
+                        <p id="errorText" class="text-red-500 text-sm mt-2"></p>
 
-                <!-- Select Input -->
-                <label for="selectInput" class="block text-sm font-medium text-gray-700 mt-3">Select Option:</label>
-                <select id="selectInput" class="w-full p-2 mt-1 border rounded-md">
-                    <option value="">Work</option>
-                    <option value="">Diet</option>
-                    <option value="">List of books</option>
-                    <option value="">Road trip list</option>
-                    <option value="">personal</option>
-                </select>
+                        <!-- Select Category -->
+                        <label for="selectInput" class="block text-sm font-medium text-gray-700 mt-3">Select
+                            Category:</label>
+                        <select id="selectInput" name="category" class="w-full p-2 mt-1 border rounded-md">
+                            <option value="Work">Work</option>
+                            <option value="Diet">Diet</option>
+                            <option value="List of books">List of books</option>
+                            <option value="Road trip list">Road trip list</option>
+                            <option value="Personal">Personal</option>
+                        </select>
 
-                <!-- Buttons -->
-                <div class="mt-4 flex justify-between">
-                    <button id="closeModal" type="button" class="px-4 py-2 bg-red-500 text-white rounded-md">Close</button>
-                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md">Submit</button>
+                        <!-- Buttons -->
+                        <div class="mt-4 flex justify-between">
+                            <button id="closeModal" type="button"
+                                class="px-4 py-2 bg-red-500 text-white rounded-md">Close</button>
+                            <button onclick="submitData()" type="submit"
+                                class="px-4 py-2 bg-green-500 text-white rounded-md">Submit</button>
+                        </div>
+
+                    </form>
                 </div>
-                
-            </form>
-        </div>
-    </div>
-            
-    
+            </div>
+
+
         </main>
+        <div>
+            <table class="border">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="px-4 py-2">S.No</th>
+                        <th class="px-4 py-2">Date</th>
+                        <th class="px-4 py-2">from_time</th>
+                        <th class="px-4 py-2">to_time</th>
+                        <th class="px-4 py-2">select_category</th>
+                        <th class="px-4 py-2">Task</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody">
+                    <!-- Data will be injected here -->
+                </tbody>
+            </table>
+
+            <button class="border rounded-full bg-green-500 h-10 w-80 mt-4" onclick="fetchData()">Refresh Data</button>
+        </div>
     </div>
     <script>
         function getGreeting() {
-          const hours = new Date().getHours();
-          if (hours < 12) return "Good Morning! ☀️";
-          else if (hours < 18) return "Good Afternoon! 🌞";
-          else return "Good Evening! 🌙";
-       }
-      
-       // Update greeting on page load
-       document.addEventListener("DOMContentLoaded", function () {
-          const greetingElement = document.getElementById("greeting");
-          if (greetingElement) {
-              greetingElement.textContent = getGreeting();
-          }
-      
-          // // Add click event to refresh button
-          // document.getElementById("refreshBtn").addEventListener("click", function () {
-          //     greetingElement.textContent = getGreeting();
-          // });
-       });
+            const hours = new Date().getHours();
+            if (hours < 12) return "Good Morning! ☀️";
+            else if (hours < 18) return "Good Afternoon! 🌞";
+            else return "Good Evening! 🌙";
+        }
 
-       function updateDateTime() {
-           const now = new Date();
+        // Update greeting on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            const greetingElement = document.getElementById("greeting");
+            if (greetingElement) {
+                greetingElement.textContent = getGreeting();
+            }
+        });
+
+        function updateDateTime() {
+            const now = new Date();
             // Get day, date
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-             const dateString = now.toLocaleDateString(undefined, options);
-             const timeString = now.toLocaleTimeString();
-             // Update elements
-              document.getElementById("date").textContent = dateString;
-              document.getElementById("time").textContent = timeString;
-              
-          }
-          // Update time every second
-          setInterval(updateDateTime, 1000);
-          // Initial call to set values on page load
-          document.addEventListener("DOMContentLoaded", updateDateTime);
+            const dateString = now.toLocaleDateString(undefined, options);
+            const timeString = now.toLocaleTimeString();
+            // Update elements
+            document.getElementById("date").textContent = dateString;
+            document.getElementById("time").textContent = timeString;
 
-                 //popup
-          document.addEventListener("DOMContentLoaded", function () {
-    const modal = document.getElementById("modal");
-    const openModalBtn = document.getElementById("openModal");
-    const closeModalBtn = document.getElementById("closeModal");
-    const dateInput = document.getElementById("dateInput");
-    const fromTimeInput = document.getElementById("fromTime");
-    const toTimeInput = document.getElementById("toTime");
-    const errorText = document.getElementById("errorText");
-    
-
-
-    function validateTime() {
-        const fromTime = fromTimeInput.value;
-        const toTime = toTimeInput.value;
-
-        if (fromTime && toTime && fromTime >= toTime) {
-            errorText.textContent = "End time must be after start time!";
-            toTimeInput.classList.add("border-red-500");
-        } else {
-            errorText.textContent = "";
-            toTimeInput.classList.remove("border-red-500");
         }
+        // Update time every second
+        setInterval(updateDateTime, 1000);
+        // Initial call to set values on page load
+        document.addEventListener("DOMContentLoaded", updateDateTime);
+
+        //popup
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("modal");
+            const openModalBtn = document.getElementById("openModal");
+            const closeModalBtn = document.getElementById("closeModal");
+            const dateInput = document.getElementById("dateInput");
+            const fromTimeInput = document.getElementById("fromTime");
+            const toTimeInput = document.getElementById("toTime");
+            const errorText = document.getElementById("errorText");
+
+
+
+            function validateTime() {
+                const fromTime = fromTimeInput.value;
+                const toTime = toTimeInput.value;
+
+                if (fromTime && toTime && fromTime >= toTime) {
+                    errorText.textContent = "End time must be after start time!";
+                    toTimeInput.classList.add("border-red-500");
+                } else {
+                    errorText.innerHTML += "";
+                    toTimeInput.classList.remove("border-red-500");
+                }
+            }
+
+            fromTimeInput.addEventListener("change", validateTime);
+            toTimeInput.addEventListener("change", validateTime);
+
+            // Open modal
+            openModalBtn.addEventListener("click", () => {
+                modal.classList.remove("hidden");
+            });
+
+            // Close modal
+            closeModalBtn.addEventListener("click", () => {
+                modal.classList.add("hidden");
+            });
+
+            
+        });
+
+
+
+        // fetch method for post
+
+        async function submitData() {
+           
+            const date = document.getElementById("dateInput").value
+            
+            const from_time = document.getElementById("fromTime").value
+            
+            const to_time = document.getElementById("toTime").value
+            
+            const select_category = document.getElementById("selectInput").value
+            
+
+            if (!date || !from_time || !to_time || !select_category) {
+                alert("Please fill out all fields.")
+                return
+            }
+
+
+            const payload = {
+                date: date,
+                from_time: from_time,
+                to_time: to_time,
+                select_category: select_category,
+            }
+
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/categery", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                })
+
+
+                const data = await response.json()
+                if (response.ok) {
+                    alert("Task Created Successfully!")
+                    document.querySelector("#dateInput").value = ""
+                    document.querySelector("#fromTime").value = ""
+                    document.querySelector("#toTime").value = ""
+                    document.querySelector("#selectInput").value = ""
+
+                } else {
+                    alert("Error: " + data.detail)
+                }
+            } catch (error) {
+                console.error("Error:", error)
+                alert("Failed to create task.")
+            }
+        }
+
+
+async function fetchData() {
+      try {
+          let response = await fetch("http://127.0.0.1:8000/categery/")
+          let fetchresponse = await response.json()
+          Table(fetchresponse.data)
+      } catch (error) {
+          console.error("Error fetching data:", error)
+      }
+  }
+
+
+  function Table(data) {
+      let table = document.getElementById("dataTableBody");
+      table.innerHTML = `
+          
+          
+              ${data.map((item, index) => `
+                  <tr id="row-${item._id}" class="border-b">
+                      <td class="px-4 py-2">${index + 1}</td>
+                      <td class="px-4 py-2">${item.date}</td>
+                      <td class="px-4 py-2">${item.from_time}</td>
+                      <td class="px-4 py-2">${item.to_time}</td>
+                      <td class="px-4 py-2">${item.select_category}</td>
+                      <td class="px-4 py-2">
+                           <button class="bg-green-500 text-black px-3 py-1 rounded-full hover:bg-pink-600">Update</button>
+                           <button class="bg-green-500 text-black px-3 py-1 rounded-full hover:bg-red-600 ml-2" onclick="deleteTask('${item._id}')">Delete</button>
+                      </td>
+                  </tr>
+              `).join('')}
+          
+      `;
+  }
+  // to delete the task
+  async function deleteTask(taskId) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/categery/${taskId}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        // Optionally, remove the task from the UI
+        const row = document.getElementById(`row-${taskId}`);
+        if (row) {
+            row.remove();
+        }
+    } catch (error) {
+        console.error('Error deleting task:', error);
     }
+}
 
-    fromTimeInput.addEventListener("change", validateTime);
-    toTimeInput.addEventListener("change", validateTime);
 
-    // Open modal
-    openModalBtn.addEventListener("click", () => {
-        modal.classList.remove("hidden");
-    });
 
-    // Close modal
-    closeModalBtn.addEventListener("click", () => {
-        modal.classList.add("hidden");
-    });
+    </script>
 
-    // Set default date & time
-    function setDefaultDateTime() {
-        const now = new Date();
-        dateInput.value = now.toISOString().split("T")[0]; // YYYY-MM-DD
-        timeInput.value = now.toTimeString().slice(0, 5); // HH:MM
-    }
 
-    setDefaultDateTime(); // Set initial values
-});
-
-  
-
-      
-     </script>   
-
-  
 </body>
+
 </html>
