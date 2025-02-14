@@ -1,78 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"> </script>
-    
+
 </head>
+
 <body>
 
-      <div class="grid grid-cols-4 gap-0 h-screen">
-          <div class=" bg-pink-200 w-110">
+    <div class="grid grid-cols-4 gap-0 h-screen">
+        <div class=" bg-pink-200 w-90">
             <h2 class="text-xl font-semibold mb-4 mt-4 ml-4">Private</h2>
-            <ul class="space-y-3">
-                <li class="flex items-center justify-between  hover:bg-red-100 rounded-lg h-19 w-100 py-2">
-                    <span class="flex items-center gap-2 ml-6"><span>🏠</span> Home</span> <span class="text-gray-500 mr-4">8</span>
-                </li>
+            <ul class="space-y-3" id="listcontainer">
+                 <li class="flex items-center justify-between  hover:bg-red-100 rounded-lg h-19 w-100 py-2">
+                    <span class="flex items-center gap-2 ml-6 font-bold"><span>🏠</span> Home</span> <span
+                        class="text-gray-500 mr-4"></span>
+                </li> 
 
 
-                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
-                    <span class="flex items-center gap-2 ml-6"><span>✅</span> Completed</span> <span class="text-gray-500 mr-4">16</span>
-                </li>
+            </ul>
 
-                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
-                    <span class="flex items-center gap-2 text-black-500 ml-6">🟣 Personal</span> <span class="text-gray-500 mr-4">4</span>
-                </li>
-
-                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
-                    <span class="flex items-center gap-2 text-black-500 ml-6">💼 Work</span> <span class="text-gray-500 mr-4">6</span>
-                </li>
-
-                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
-                    <span class="flex items-center gap-2 ml-6">💪 Diet</span> <span class="text-gray-500 mr-4">3</span>
-                </li>
-
-                <li class="flex items-center justify-between space-y-3 hover:bg-red-100 rounded-lg h-15 w-100">
-                    <span class="flex items-center gap-2 ml-6">📚 List of Book</span> <span class="text-gray-500 mr-4">8</span>
-                </li>
-
-                <li class="flex items-center justify-between space-y-3  hover:bg-red-100 rounded-lg h-15 w-100">
-                    <span class="flex items-center gap-2 ml-6">🚗 Road trip list</span> <span class="text-gray-500 mr-4">6</span>
-                </li>
-
-                </ul>
-
-                <button class="mt-4 ml-2 w-180 flex items-center px-20 h-10 border border-black-300 rounded-lg hover:bg-gray-200">
-                    +Create new list
+            <div class="mt-4">
+                <input type="text" id="categoryInput" placeholder="Enter category name"
+                    class="border p-2 rounded-lg w-94 ml-10">
+                <button id="btn"
+                    class="ml-2 px-4 py-2 border border-black-300 rounded-lg bg-white-500 bg-gray-200 font-bold w-20 text-2xl">
+                    +
                 </button>
+            </div>
 
-                <h3 class="text-2xl font-medium ml-4 mt-2">Group</h3>
+            <h3 class="text-2xl font-medium ml-4 mt-6">Group</h3>
 
-                <div class="flex flex-row space-y-3">
-            
-                   <div class="flex flex-col flex-wrap p-6">
-                       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI4-PV5TZQtSuiqrZ0RGKzeT8UVgSmR4HGKg&s"  class="w-40 h-25 gap-9 mr-4">
-                   
-                        <p class="mt-2 text-lg font-semibold">CRM</p>
-                      
-                   </div>
-                   <div class="flex flex-col flex-wrap p-4 ">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc0F0AS9xArnSXso7e19t6Vw1gyH9vIEF86w&s"  class="w-20 h-25 gap-9 ml-10">
-                        <p class=" mt-2 text-lg font-semibold text-center">stark.ai</p>
-                   </div>
+            <div class="flex flex-row space-y-3">
+
+                <div class="flex flex-col flex-wrap p-6">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI4-PV5TZQtSuiqrZ0RGKzeT8UVgSmR4HGKg&s"
+                        class="w-40 h-25 gap-9 mr-4">
+
+                    <p class="mt-2 text-lg font-semibold">team</p>
+
                 </div>
+                <!-- <div class="flex flex-col flex-wrap p-4 ">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc0F0AS9xArnSXso7e19t6Vw1gyH9vIEF86w&s"
+                        class="w-40 h-25 gap-9 ml-10">
+                    <p class=" mt-2 text-lg font-semibold text-center">stark.ai</p>
+                </div> -->
+            </div> 
 
-                <button class="mt-4 ml-2 w-180 flex items-center px-20 h-10 border border-black-300 rounded-lg hover:bg-gray-200">
-                    + Create new group
+            <div class="mt-4">
+                <input type="text"  placeholder="Create category group"
+                    class="border p-2 rounded-lg w-94 ml-10">
+                <button 
+                    class="ml-2 px-4 py-2 border border-black-300 rounded-lg bg-white-500 bg-gray-200 font-bold w-20 text-2xl">
+                    +
                 </button>
-               
-          </div>
-          <div class=" col-span-3 bg-white-500 ml-10">
-               {%include 'body.html'%}
-          </div> 
-        </div>  
-    
+            </div>
+
+        </div>
+        <div class=" col-span-3 bg-white-500 ml-10">
+            {%include 'body.html'%}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("btn").addEventListener("click", function () {
+            let categoryName = document.getElementById("categoryInput").value.trim();
+
+            if (categoryName === "") {
+                alert("Please enter a category name.");
+                return;
+            }
+
+            //  API endpoint 
+            let apiUrl = "http://127.0.0.1:8000/task";
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name: categoryName })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert("Category added successfully!");
+                    document.getElementById("categoryInput").value = ""; // Clear input field
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Failed to add category.");
+                });
+        });
+
+
+
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            let apiUrl = "http://127.0.0.1:8000/task"; // Ensure backend is running
+            let listContainer = document.getElementById("listcontainer");
+            let existingCategories = new Set(); // Track existing items to prevent duplicates
+
+            function fetchAndUpdate() {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(responseData => {
+                        // console.log("API Response:", responseData); // Debugging
+
+                        let categories = responseData?.data;
+
+                        if (!Array.isArray(categories)) {
+                            console.error("Expected an array but got:", categories);
+                            return;
+                        }
+
+                        categories.forEach(category => {
+                            if (!existingCategories.has(category.name)) { // Only add new items
+                                let listItem = document.createElement("li");
+                                listItem.className = "flex items-center justify-between hover:bg-red-100 rounded-lg h-15 w-100 py-2";
+                                listItem.innerHTML = `
+                            <span class="flex items-center gap-2 ml-6 font-semibold ">${category?.name}</span>
+                            <div>
+                                <button class="mr-10" onclick="updateCategory('${category._id}', this)"> ✏️</button>
+                                <button class="mr-40" onclick="deleteCategory('${category._id}', this)">🗑️</button>
+                            </div>
+
+                            
+                        `;
+
+                                listContainer.appendChild(listItem);
+                                existingCategories.add(category.name);
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching categories:", error);
+                    });
+            }
+
+            fetchAndUpdate(); // Initial call
+            setInterval(fetchAndUpdate, 100); // Fetch new data every 5 seconds
+        });
+
+        function deleteCategory(categoryId, button) {
+            // Remove item from the UI
+            const listItem = button.closest('li');
+            if (listItem) {
+                listItem.remove();
+            }
+
+            // Make an API call to delete the item from the backend
+            fetch(`http://127.0.0.1:8000/task/${categoryId}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log(`Category with ID ${categoryId} deleted successfully.`);
+                    } else {
+                        console.error("Error deleting category from the backend.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error deleting category:", error);
+                });
+        }
+
+        function updateCategory(categoryId, buttonElement) {
+            let listItem = buttonElement.closest("li");
+            if (!listItem) {
+                console.error("Could not find the parent <li> element.");
+                return;
+            }
+
+            // Adjust this selector
+            let nameElement = listItem.querySelector("[data-category-name]") || listItem.querySelector("span");
+            if (!nameElement) {
+                console.error("Could not find the category name element.");
+                return;
+            }
+
+            let newName = prompt("Enter new category name:", nameElement.textContent)?.trim();
+            if (!newName) {
+                alert("Category name cannot be empty!");
+                return;
+            }
+
+            let apiUrl = `http://127.0.0.1:8000/task/${categoryId}`;
+
+            fetch(apiUrl, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name: newName }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to update category: ${response.statusText}`);
+                    }
+                    return response.json().catch(() => null);
+                })
+                .then(data => {
+                    if (data) {
+                        nameElement.textContent = newName; // Update UI only if successful
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating category:", error);
+                    alert("An error occurred while updating the category. Please try again.");
+                });
+        }
+
+
+
+    </script>
+
 </body>
+
 </html>

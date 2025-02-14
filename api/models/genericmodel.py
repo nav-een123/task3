@@ -2,6 +2,13 @@ from typing import Union
 from pydantic import BaseModel, Field, validator
 from datetime import datetime,time
 
+# task
+class Task(BaseModel):
+    name: str
+
+class updatetask(BaseModel):
+    name:str
+
 
 # user
 class createItems(BaseModel):

@@ -31,9 +31,11 @@
                     id="openModal">
                     create new task
                 </button>
+                <button class="border rounded-lg bg-green-500 h-10 w-60 mt-4 mr-80 mb-4" onclick="fetchData()">Get
+                    Data</button>
             </div>
             <!-- Popup Modal -->
-            <div id="modal" class="hidden fixed inset-0 flex items-center justify-center  bg-opacity-50">
+            <div id="modal" class="hidden fixed inset-0 flex items-center justify-center  bg-opacity-50 bg-gray-900">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-96">
                     <h2 class="text-lg font-bold mb-4">Create new task</h2>
 
@@ -56,22 +58,26 @@
                         <p id="errorText" class="text-red-500 text-sm mt-2"></p>
 
                         <!-- Select Category -->
+                         
                         <label for="selectInput" class="block text-sm font-medium text-gray-700 mt-3">Select
                             Category:</label>
-                        <select id="selectInput" name="category" class="w-full p-2 mt-1 border rounded-md">
-                            <option value="Work">Work</option>
+                        <select id="selectInput" name="category" class="w-full p-2 mt-1 border rounded-md max-h-80 overflow-y-auto ">
+                            <!-- <option value="Work">Work</option>
                             <option value="Diet">Diet</option>
                             <option value="List of books">List of books</option>
                             <option value="Road trip list">Road trip list</option>
-                            <option value="Personal">Personal</option>
+                            <option value="Personal">Personal</option> -->
                         </select>
+                        
 
                         <!-- Buttons -->
                         <div class="mt-4 flex justify-between">
                             <button id="closeModal" type="button"
                                 class="px-4 py-2 bg-red-500 text-white rounded-md">Close</button>
-                            <button onclick="submitData()" type="submit"
-                                class="px-4 py-2 bg-green-500 text-white rounded-md">Submit</button>
+                            <button id="submitBtn" type="button" class="px-4 py-2 bg-green-500 text-white rounded-md">
+                                Submit
+                            </button>
+
                         </div>
 
                     </form>
@@ -81,15 +87,16 @@
 
         </main>
         <div>
-            <table class="border">
+            <table class="border ml-20">
+
                 <thead>
                     <tr class="bg-gray-200">
-                        <th class="px-4 py-2">S.No</th>
-                        <th class="px-4 py-2">Date</th>
-                        <th class="px-4 py-2">from_time</th>
-                        <th class="px-4 py-2">to_time</th>
-                        <th class="px-4 py-2">select_category</th>
-                        <th class="px-4 py-2">Task</th>
+                        <th class="px-12 py-2 w-20">S.No</th>
+                        <th class="px-4 py-2 w-40">Date</th>
+                        <th class="px-4 py-2 w-20">from</th>
+                        <th class="px-4 py-2 w-20">To</th>
+                        <th class="px-4 py-2 w-20">select_category</th>
+                        <th class="px-4 py-2 ">Edit</th>
                     </tr>
                 </thead>
                 <tbody id="dataTableBody">
@@ -97,14 +104,14 @@
                 </tbody>
             </table>
 
-            <button class="border rounded-full bg-green-500 h-10 w-80 mt-4" onclick="fetchData()">Refresh Data</button>
+
         </div>
     </div>
     <script>
         function getGreeting() {
             const hours = new Date().getHours();
             if (hours < 12) return "Good Morning! ☀️";
-            else if (hours < 18) return "Good Afternoon! 🌞";
+            else if (hours < 16) return "Good Afternoon! 🌞";
             else return "Good Evening! 🌙";
         }
 
@@ -170,23 +177,25 @@
                 modal.classList.add("hidden");
             });
 
-            
+
         });
+        function closeModal() {
+            document.getElementById("modal").classList.add("hidden");
+        }
 
 
-
-        // fetch method for post
+        // fetch post method
 
         async function submitData() {
-           
+
             const date = document.getElementById("dateInput").value
-            
+
             const from_time = document.getElementById("fromTime").value
-            
+
             const to_time = document.getElementById("toTime").value
-            
+
             const select_category = document.getElementById("selectInput").value
-            
+
 
             if (!date || !from_time || !to_time || !select_category) {
                 alert("Please fill out all fields.")
@@ -229,60 +238,178 @@
             }
         }
 
+        //get data
+        document.addEventListener("DOMContentLoaded", fetchData);
 
-async function fetchData() {
-      try {
-          let response = await fetch("http://127.0.0.1:8000/categery/")
-          let fetchresponse = await response.json()
-          Table(fetchresponse.data)
-      } catch (error) {
-          console.error("Error fetching data:", error)
-      }
-  }
+        async function fetchData() {
+            try {
+                let response = await fetch("http://127.0.0.1:8000/categery/");
+                let fetchresponse = await response.json();
+                Table(fetchresponse.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function Table(data) {
+            let table = document.getElementById("dataTableBody");
+            table.innerHTML = data.map((item, index) => `
+        <tr id="row-${item._id}" class="border-b">
+            <td class="px-4 py-2">${index + 1}</td>
+            <td class="px-4 py-2">${item.date}</td>
+            <td class="px-4 py-2">${item.from_time}</td>
+            <td class="px-4 py-2">${item.to_time}</td>
+            <td class="px-4 py-2">${item.select_category}</td>
+            <td class="px-4 py-2">
+                <button class="bg-green-500 text-black px-3 py-1 rounded-full hover:bg-pink-600" 
+                    onclick="openUpdateModal('${item._id}', '${item.date}', '${item.from_time}', '${item.to_time}', '${item.select_category}')">
+                    Update
+                </button>
+                <button class="bg-green-500 text-black px-3 py-1 rounded-full hover:bg-red-600 ml-2" 
+                    onclick="deleteTask('${item._id}')">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    `).join('');
+        }
 
 
-  function Table(data) {
-      let table = document.getElementById("dataTableBody");
-      table.innerHTML = `
-          
-          
-              ${data.map((item, index) => `
-                  <tr id="row-${item._id}" class="border-b">
-                      <td class="px-4 py-2">${index + 1}</td>
-                      <td class="px-4 py-2">${item.date}</td>
-                      <td class="px-4 py-2">${item.from_time}</td>
-                      <td class="px-4 py-2">${item.to_time}</td>
-                      <td class="px-4 py-2">${item.select_category}</td>
-                      <td class="px-4 py-2">
-                           <button class="bg-green-500 text-black px-3 py-1 rounded-full hover:bg-pink-600">Update</button>
-                           <button class="bg-green-500 text-black px-3 py-1 rounded-full hover:bg-red-600 ml-2" onclick="deleteTask('${item._id}')">Delete</button>
-                      </td>
-                  </tr>
-              `).join('')}
-          
-      `;
-  }
-  // to delete the task
-  async function deleteTask(taskId) {
-    try {
-        const response = await fetch(`http://127.0.0.1:8000/categery/${taskId}`, {
-            method: 'DELETE',
+        // to delete the task
+        async function deleteTask(taskId) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/categery/${taskId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                // Optionally, remove the task from the UI
+                const row = document.getElementById(`row-${taskId}`);
+                if (row) {
+                    row.remove();
+                }
+            } catch (error) {
+                console.error('Error deleting task:', error);
+            }
+        }
+
+        // Open Modal for Creating a New Task (Clears Fields)
+        document.getElementById("openModal").addEventListener("click", function () {
+            document.getElementById("dateInput").value = "";
+            document.getElementById("fromTime").value = "";
+            document.getElementById("toTime").value = "";
+            document.getElementById("selectInput").value = "";
+
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.textContent = "Create Task";
+            submitBtn.setAttribute("onclick", "submitData()");
+
+            document.getElementById("modal").classList.remove("hidden");
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        // Open Modal for Updating a Task (Prefills Fields)
+        function openUpdateModal(taskId, date, fromTime, toTime, category) {
+            document.getElementById("dateInput").value = date;
+            document.getElementById("fromTime").value = fromTime;
+            document.getElementById("toTime").value = toTime;
+            document.getElementById("selectInput").value = category;
+
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.textContent = "Update Task";
+            submitBtn.setAttribute("onclick", `updateTask('${taskId}')`);
+
+            document.getElementById("modal").classList.remove("hidden");
         }
 
-        const result = await response.json();
-        // Optionally, remove the task from the UI
-        const row = document.getElementById(`row-${taskId}`);
-        if (row) {
-            row.remove();
+
+        // Update Task in Backend
+        async function updateTask(taskId) {
+            const updatedTask = {
+                date: document.getElementById("dateInput").value,
+                from_time: document.getElementById("fromTime").value,
+                to_time: document.getElementById("toTime").value,
+                select_category: document.getElementById("selectInput").value,
+            };
+
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/categery/${taskId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updatedTask)
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert("Task Updated Successfully!");
+                    document.getElementById("modal").classList.add("hidden");
+                    fetchData();  // Refresh table
+                } else {
+                    alert("Error: " + result.detail);
+                }
+            } catch (error) {
+                console.error("Error updating task:", error);
+                alert("Failed to update task.");
+            }
         }
-    } catch (error) {
-        console.error('Error deleting task:', error);
-    }
-}
+
+
+        //select option
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let apiUrl = "http://127.0.0.1:8000/task"; // Ensure backend is running
+            let listContainer = document.getElementById("selectInput");
+            let existingCategories = new Set(); // Track existing items to prevent duplicates
+            let selectInput = document.getElementById("selectInput"); // Reference to the select element
+
+            function fetchAndUpdate() {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(responseData => {
+                        console.log("API Response:", responseData); 
+
+                        let categories = responseData?.data;
+
+                        if (!Array.isArray(categories)) {
+                            console.error("Expected an array but got:", categories);
+                            return;
+                        }
+
+                        categories.forEach(category => {
+                            if (!existingCategories.has(category.name)) { // Only add new items
+                                let listItem = document.createElement("li");
+                                listItem.className = "flex items-center justify-between hover:bg-red-100 rounded-lg h-15 w-100 py-2";
+                                listItem.innerHTML = `
+                            <span class="flex items-center gap-2 ml-6 font-semibold ">${category?.name}</span>
+                            <div>
+                                <button class="mr-10" onclick="updateCategory('${category._id}', this)"> ✏️</button>
+                                <button class="mr-40" onclick="deleteCategory('${category._id}', this)">🗑️</button>
+                            </div>
+                           
+                        `;
+
+                                listContainer.appendChild(listItem);
+                                existingCategories.add(category.name);
+
+                                // Add the category to the select dropdown
+                                let option = document.createElement("option");
+                                option.value = category.name;
+                                option.textContent = category.name;
+                                selectInput.appendChild(option);
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching categories:", error);
+                    });
+            }
+
+            fetchAndUpdate(); // Initial call
+            setInterval(fetchAndUpdate, 10000); // Fetch new data every 10 seconds
+        });
 
 
 

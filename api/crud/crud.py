@@ -1,12 +1,12 @@
-from api.db.data import users, category_collection
+from api.db.data import users, category_collection,tasks
 from bson import ObjectId
 from fastapi import HTTPException
-
 from pydantic import BaseModel
 
 
 
 COLLECTIONS = {
+    "task":tasks,
     "users": users,
     "categery": category_collection
 }
@@ -49,7 +49,7 @@ def get_document_by_id(collection_name: str, item_id: str):
         if not item:
             raise HTTPException(status_code=404, detail=f"{collection_name.capitalize()} not found")
         item["_id"] = str(item["_id"])
-        return {"message": f"{collection_name.capitalize()} retrieved successfully", "data": item}
+        return { "data": item}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

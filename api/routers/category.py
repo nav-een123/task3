@@ -1,7 +1,8 @@
 from fastapi import APIRouter,Request
+
 from api.crud.crud import create_document,get_document_by_id,get_all_documents,update_document,delete_document
 
-from api.models.genericmodel import createItems,createScheduleModel,updateItems,updateScheduleModel
+from api.models.genericmodel import createItems,createScheduleModel,updateItems,updateScheduleModel,Task,updatetask
 
 from fastapi.templating import Jinja2Templates
 
@@ -28,7 +29,7 @@ def home(request: Request):
 
 @router.post("/{collection_name}")
 
-async def create_item(collection_name: str, payload: createItems | createScheduleModel ):
+async def create_item(collection_name: str, payload: createItems | createScheduleModel | Task ):
     return create_document(collection_name, payload)
 
 
@@ -48,7 +49,7 @@ async def get_all_items(collection_name: str):
 
 @router.put("/{collection_name}/{item_id}")
 
-async def update_item(collection_name: str, item_id: str, payload: updateItems | updateScheduleModel):
+async def update_item(collection_name: str, item_id: str, payload: updateItems | updateScheduleModel|updatetask):
     return update_document(collection_name, item_id, payload)
 
 
