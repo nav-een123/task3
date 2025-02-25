@@ -93,15 +93,16 @@
                     console.error("Error:", error);
                     alert("Failed to add category.");
                 });
+                
         });
 
 
 
         
         document.addEventListener("DOMContentLoaded", function () {
-            let apiUrl = "http://127.0.0.1:8000/task"; // Ensure backend is running
+            let apiUrl = "http://127.0.0.1:8000/task"; 
             let listContainer = document.getElementById("listcontainer");
-            let existingCategories = new Set(); // Track existing items to prevent duplicates
+            let existingCategories = new Set();
 
             function fetchAndUpdate() {
                 fetch(apiUrl)
@@ -119,7 +120,7 @@
                         categories.forEach(category => {
                             if (!existingCategories.has(category.name)) { // Only add new items
                                 let listItem = document.createElement("li");
-                                listItem.className = "flex items-center justify-between hover:bg-red-100 rounded-lg h-15 w-100 py-2";
+                                listItem.className = "flex items-center justify-between hover:bg-red-100 rounded-lg h-15 w-100 py-2 border mx-2 my-2 border-blue-200";
                                 listItem.innerHTML = `
                             <span class="flex items-center gap-2 ml-6 font-semibold ">${category?.name}</span>
                             <div>
@@ -132,6 +133,7 @@
 
                                 listContainer.appendChild(listItem);
                                 existingCategories.add(category.name);
+                                // updateCategory(list._id,list.name)
                             }
                         });
                     })
@@ -141,7 +143,7 @@
             }
 
             fetchAndUpdate(); // Initial call
-            setInterval(fetchAndUpdate, 100); // Fetch new data every 5 seconds
+            
         });
 
         function deleteCategory(categoryId, button) {
@@ -207,6 +209,7 @@
                         nameElement.textContent = newName; // Update UI only if successful
                     }
                 })
+
                 .catch(error => {
                     console.error("Error updating category:", error);
                     alert("An error occurred while updating the category. Please try again.");

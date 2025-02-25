@@ -1,10 +1,12 @@
 from fastapi import FastAPI
-from api.routers import category
+from api.routers import router,profilerouter
 from fastapi.middleware.cors import CORSMiddleware
 
 app=FastAPI()
 
-app.include_router(category.router)
+app.include_router(profilerouter.router)
+app.include_router(router.router)
+
 
 app.add_middleware(
 

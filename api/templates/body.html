@@ -14,13 +14,43 @@
         <main class="flex-1 p-6">
             <div class="flex justify-between items-center px-9">
                 <h1 class="text-2xl font-semibold" id="greeting"></h1>
-                <button class="bg-gray-200 px-4 py-2 rounded-lg">
-                    <select id="inputselect">
-                        <option value="option1"> Today </option>
-                        <option value="option2">Tomorrow</option>
-                        <option value="option3"> Yesteraday</option>
-                    </select>
-                </button>
+                <div class="flex items-center space-x-2">
+                    <!-- Filter Dropdown -->
+                    <button class="bg-gray-200 px-4 py-2 rounded-lg">
+                        <select id="inputselect" class="bg-transparent outline-none">
+                            <option value="option1">Today</option>
+                            <option value="option2">Tomorrow</option>
+                            <option value="option3">Yesterday</option>
+                            <option value="custom">Custom</option>
+                            <option value="option4">Default</option>
+                        </select>
+
+
+                    </button>
+                    <div id="customDateContainer" style="display: none; margin-top: 10px;">
+                        <form>
+                        <label>From: <input type="date" id="fromDate"
+                                class="w-full p-2 mt-1 border rounded-md"></label><br>
+                        <label>To: <input type="date" id="toDate" class="w-full p-2 mt-1 border rounded-md"></label>
+                        </form>
+                    </div>
+
+
+                    <!-- Menu Button -->
+                    <div class="relative">
+                        <button id="menuButton" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md">
+                            ☰
+                        </button>
+                        <div id="menuDropdown"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
+                            <ul class="py-2">
+                                <li><a href="/profile" class="block px-4 py-2 hover:bg-gray-100" id="profile"></a></li>
+                                <li><a href="/login" class="block px-4 py-2 hover:bg-gray-100">LogOut</a></li>
+                                <li><a href="#" class="block px-4 py-2 hover:bg-gray-100"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="flex  items-center px-9">
                 <span id="time" class="text-gray-500"></span>
@@ -31,12 +61,12 @@
                     id="openModal">
                     create new task
                 </button>
-                <button class="border rounded-lg bg-green-500 h-10 w-60 mt-4 mr-80 mb-4" onclick="fetchData()">Get
-                    Data</button>
+                <!-- <button class="border rounded-lg bg-green-500 h-10 w-60 mt-4 mr-80 mb-4" onclick="fetchData()">Get
+                    Data</button> -->
             </div>
             <!-- Popup Modal -->
             <div id="modal" class="hidden fixed inset-0 flex items-center justify-center  bg-opacity-50 bg-gray-900">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <div class="bg-white p-6 rounded-lg shadow-lg w-1/4">
                     <h2 class="text-lg font-bold mb-4">Create new task</h2>
 
                     <!-- Form -->
@@ -54,21 +84,21 @@
                         <label for="toTime" class="block text-sm font-medium text-gray-700 mt-3">To Time:</label>
                         <input type="time" id="toTime" name="to_time" class="w-full p-2 mt-1 border rounded-md">
 
-                        <!-- Error Message -->
-                        <p id="errorText" class="text-red-500 text-sm mt-2"></p>
 
                         <!-- Select Category -->
-                         
+
                         <label for="selectInput" class="block text-sm font-medium text-gray-700 mt-3">Select
                             Category:</label>
-                        <select id="selectInput" name="category" class="w-full p-2 mt-1 border rounded-md max-h-80 overflow-y-auto ">
-                            <!-- <option value="Work">Work</option>
-                            <option value="Diet">Diet</option>
-                            <option value="List of books">List of books</option>
-                            <option value="Road trip list">Road trip list</option>
-                            <option value="Personal">Personal</option> -->
+                        <select id="selectInput" name="category"
+                            class="w-full p-2 mt-1 border rounded-md max-h-80 overflow-y-auto ">
                         </select>
-                        
+
+                        <label for="Task" class="block text-sm font-medium text-gray-700 mt-3">Task:</label>
+                        <input type="text" id="etask" name="task" class="w-full p-2 mt-1 border rounded-md">
+                        <label for="taskNote"
+                            class="block text-sm font-medium text-gray-700 mt-3">Description:</label><br>
+                        <textarea id="taskNote" rows="3" placeholder="Add a note about the task..."
+                            class="w-full p-2 border rounded-md"></textarea>
 
                         <!-- Buttons -->
                         <div class="mt-4 flex justify-between">
@@ -83,8 +113,6 @@
                     </form>
                 </div>
             </div>
-
-
         </main>
         <div>
             <table class="border ml-20">
@@ -96,6 +124,8 @@
                         <th class="px-4 py-2 w-20">from</th>
                         <th class="px-4 py-2 w-20">To</th>
                         <th class="px-4 py-2 w-20">select_category</th>
+                        <th class="px-4 py-2 ">Task</th>
+                        <th class="px-4 py-2 ">Description</th>
                         <th class="px-4 py-2 ">Edit</th>
                     </tr>
                 </thead>
@@ -103,25 +133,21 @@
                     <!-- Data will be injected here -->
                 </tbody>
             </table>
-
-
         </div>
     </div>
     <script>
+        const firstName = localStorage.getItem("firstname");
+        document.getElementById("profile").innerHTML = `${firstName}`;
+        const greetingText = document.getElementById('greeting');
         function getGreeting() {
             const hours = new Date().getHours();
-            if (hours < 12) return "Good Morning! ☀️";
-            else if (hours < 16) return "Good Afternoon! 🌞";
-            else return "Good Evening! 🌙";
+            let greeting = `Hi!, ${firstName}`;
+            if (hours >= 5 && hours < 12) greeting = `Good Morning, ${firstName}! 👋`;
+            else if (hours >= 12 && hours < 16) greeting = `Good Afternoon, ${firstName}! 👋`;
+            else if (hours >= 16 && hours < 21) greeting = `Good Evening, ${firstName}! 👋`;
+            greetingText.textContent = greeting;
         }
-
-        // Update greeting on page load
-        document.addEventListener("DOMContentLoaded", function () {
-            const greetingElement = document.getElementById("greeting");
-            if (greetingElement) {
-                greetingElement.textContent = getGreeting();
-            }
-        });
+        getGreeting();
 
         function updateDateTime() {
             const now = new Date();
@@ -147,9 +173,34 @@
             const dateInput = document.getElementById("dateInput");
             const fromTimeInput = document.getElementById("fromTime");
             const toTimeInput = document.getElementById("toTime");
-            const errorText = document.getElementById("errorText");
+            const errorText = document.getElementById("errorText"); // Ensure this element exists in your HTML
 
+            // Function to round minutes to nearest 5
+            function roundToNearest5Minutes(date) {
+                const minutes = date.getMinutes();
+                const roundedMinutes = Math.ceil(minutes / 5) * 5;
+                date.setMinutes(roundedMinutes);
+                return date;
+            }
 
+            // Set default date & time
+            function setDefaultDateTime() {
+                const now = new Date();
+                const roundedNow = roundToNearest5Minutes(new Date(now));
+
+                // Format date as YYYY-MM-DD
+                dateInput.value = now.toISOString().split("T")[0];
+
+                // Format time as HH:MM
+                const fromTime = roundedNow.toTimeString().slice(0, 5);
+                roundedNow.setMinutes(roundedNow.getMinutes() + 30); // Add 30 minutes for "to time"
+                const toTime = roundedNow.toTimeString().slice(0, 5);
+
+                fromTimeInput.value = fromTime;
+                toTimeInput.value = toTime;
+            }
+
+            setDefaultDateTime(); // Set initial values when page loads
 
             function validateTime() {
                 const fromTime = fromTimeInput.value;
@@ -159,7 +210,7 @@
                     errorText.textContent = "End time must be after start time!";
                     toTimeInput.classList.add("border-red-500");
                 } else {
-                    errorText.innerHTML += "";
+                    errorText.textContent = ""; // Clear error
                     toTimeInput.classList.remove("border-red-500");
                 }
             }
@@ -170,46 +221,59 @@
             // Open modal
             openModalBtn.addEventListener("click", () => {
                 modal.classList.remove("hidden");
+                setDefaultDateTime(); // Reset to default when modal opens
             });
 
             // Close modal
             closeModalBtn.addEventListener("click", () => {
                 modal.classList.add("hidden");
             });
-
-
         });
+
         function closeModal() {
             document.getElementById("modal").classList.add("hidden");
         }
 
+        //menu
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuButton = document.getElementById("menuButton");
+            const menuDropdown = document.getElementById("menuDropdown");
+
+            menuButton.addEventListener("click", function (event) {
+                event.stopPropagation(); // Prevents closing immediately when clicking
+                menuDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!menuButton.contains(event.target) && !menuDropdown.contains(event.target)) {
+                    menuDropdown.classList.add("hidden");
+                }
+            });
+        });
+
 
         // fetch post method
-
         async function submitData() {
+            const date = document.getElementById("dateInput").value;
+            const from_time = document.getElementById("fromTime").value;
+            const to_time = document.getElementById("toTime").value;
+            const select_category = document.getElementById("selectInput").value;
+            const task = document.getElementById("etask").value;
+            const note = document.getElementById("taskNote").value; // Get the note value
 
-            const date = document.getElementById("dateInput").value
-
-            const from_time = document.getElementById("fromTime").value
-
-            const to_time = document.getElementById("toTime").value
-
-            const select_category = document.getElementById("selectInput").value
-
-
-            if (!date || !from_time || !to_time || !select_category) {
-                alert("Please fill out all fields.")
-                return
+            if (!date || !from_time || !to_time || !select_category || !task || !note) {
+                alert("Please fill out all fields.");
+                return;
             }
-
 
             const payload = {
                 date: date,
                 from_time: from_time,
                 to_time: to_time,
                 select_category: select_category,
-            }
-
+                task: task,
+                note: note,
+            };
 
             try {
                 const response = await fetch("http://127.0.0.1:8000/categery", {
@@ -218,25 +282,36 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(payload)
-                })
+                });
 
-
-                const data = await response.json()
+                const data = await response.json();
                 if (response.ok) {
-                    alert("Task Created Successfully!")
-                    document.querySelector("#dateInput").value = ""
-                    document.querySelector("#fromTime").value = ""
-                    document.querySelector("#toTime").value = ""
-                    document.querySelector("#selectInput").value = ""
+                    alert("Task Created Successfully!");
+
+                    // Reset form fields
+                    document.getElementById("dateInput").value = "";
+                    document.getElementById("fromTime").value = "";
+                    document.getElementById("toTime").value = "";
+                    document.getElementById("selectInput").value = "";
+                    document.getElementById("etask").value = "";
+                    document.getElementById("taskNote").value = "";
+
+                    // Close the modal
+                    closeModal();
+
+                    // Refresh task list
+                    fetchData();
 
                 } else {
-                    alert("Error: " + data.detail)
+                    alert("Error: " + data.detail);
                 }
             } catch (error) {
-                console.error("Error:", error)
-                alert("Failed to create task.")
+                console.error("Error:", error);
+                alert("Failed to create task.");
             }
         }
+
+
 
         //get data
         document.addEventListener("DOMContentLoaded", fetchData);
@@ -260,9 +335,11 @@
             <td class="px-4 py-2">${item.from_time}</td>
             <td class="px-4 py-2">${item.to_time}</td>
             <td class="px-4 py-2">${item.select_category}</td>
+            <td class="px-4 py-2">${item.task}</td>
+            <td class="px-4 py-2">${item.note}</td>
             <td class="px-4 py-2">
                 <button class="bg-green-500 text-black px-3 py-1 rounded-full hover:bg-pink-600" 
-                    onclick="openUpdateModal('${item._id}', '${item.date}', '${item.from_time}', '${item.to_time}', '${item.select_category}')">
+                    onclick="openUpdateModal('${item._id}', '${item.date}', '${item.from_time}', '${item.to_time}', '${item.select_category}','${item.task}','${item.note}')">
                     Update
                 </button>
                 <button class="bg-green-500 text-black px-3 py-1 rounded-full hover:bg-red-600 ml-2" 
@@ -273,7 +350,6 @@
         </tr>
     `).join('');
         }
-
 
         // to delete the task
         async function deleteTask(taskId) {
@@ -303,6 +379,8 @@
             document.getElementById("fromTime").value = "";
             document.getElementById("toTime").value = "";
             document.getElementById("selectInput").value = "";
+            document.getElementById("etask").value = "";
+            document.getElementById("taskNote").value = "";
 
             const submitBtn = document.getElementById("submitBtn");
             submitBtn.textContent = "Create Task";
@@ -312,11 +390,13 @@
         });
 
         // Open Modal for Updating a Task (Prefills Fields)
-        function openUpdateModal(taskId, date, fromTime, toTime, category) {
+        function openUpdateModal(taskId, date, fromTime, toTime, category, task, note) {
             document.getElementById("dateInput").value = date;
             document.getElementById("fromTime").value = fromTime;
             document.getElementById("toTime").value = toTime;
             document.getElementById("selectInput").value = category;
+            document.getElementById("etask").value = task;
+            document.getElementById("taskNote").value = note;
 
             const submitBtn = document.getElementById("submitBtn");
             submitBtn.textContent = "Update Task";
@@ -325,7 +405,6 @@
             document.getElementById("modal").classList.remove("hidden");
         }
 
-
         // Update Task in Backend
         async function updateTask(taskId) {
             const updatedTask = {
@@ -333,6 +412,8 @@
                 from_time: document.getElementById("fromTime").value,
                 to_time: document.getElementById("toTime").value,
                 select_category: document.getElementById("selectInput").value,
+                task: document.getElementById("etask").value,
+                note: document.getElementById("taskNote").value
             };
 
             try {
@@ -358,9 +439,8 @@
 
 
         //select option
-
         document.addEventListener("DOMContentLoaded", function () {
-            let apiUrl = "http://127.0.0.1:8000/task"; // Ensure backend is running
+            let apiUrl = "http://127.0.0.1:8000/task";
             let listContainer = document.getElementById("selectInput");
             let existingCategories = new Set(); // Track existing items to prevent duplicates
             let selectInput = document.getElementById("selectInput"); // Reference to the select element
@@ -369,7 +449,7 @@
                 fetch(apiUrl)
                     .then(response => response.json())
                     .then(responseData => {
-                        console.log("API Response:", responseData); 
+                        console.log("API Response:", responseData);
 
                         let categories = responseData?.data;
 
@@ -408,10 +488,77 @@
             }
 
             fetchAndUpdate(); // Initial call
-            setInterval(fetchAndUpdate, 10000); // Fetch new data every 10 seconds
+           
         });
 
 
+
+
+
+        //filter
+
+        async function fetchData() {
+            try {
+                let response = await fetch("http://127.0.0.1:8000/categery/");
+                let fetchresponse = await response.json();
+                filterTasks(fetchresponse.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function filterTasks(tasks) {
+            let selectElement = document.getElementById("inputselect");
+            let customDateContainer = document.getElementById("customDateContainer");
+            let fromDateInput = document.getElementById("fromDate");
+            let toDateInput = document.getElementById("toDate");
+
+            function applyFilter() {
+                let selectedValue = selectElement.value;
+                let filteredTasks = [];
+
+                let today = new Date().toISOString().split("T")[0];
+                let tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                let formattedTomorrow = tomorrow.toISOString().split("T")[0];
+
+                let yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                let formattedYesterday = yesterday.toISOString().split("T")[0];
+
+                filteredTasks = tasks.filter(task => {
+                    let taskDate = new Date(task.date).toISOString().split("T")[0];
+
+                    if (selectedValue === "option1") return taskDate === today;
+                    if (selectedValue === "option2") return taskDate === formattedTomorrow;
+                    if (selectedValue === "option3") return taskDate === formattedYesterday;
+                    if (selectedValue === "custom" && fromDateInput.value && toDateInput.value)
+                        return taskDate >= fromDateInput.value && taskDate <= toDateInput.value;
+                    return true;
+                });
+
+                Table(filteredTasks);
+            }
+
+            selectElement.addEventListener("change", function () {
+                if (selectElement.value === "custom") {
+                    customDateContainer.style.display = "inline";
+                } else {
+                    customDateContainer.style.display = "none";
+                    fromDateInput.value = "";
+                    toDateInput.value = "";
+                }
+                applyFilter();
+                
+            });
+
+            fromDateInput.addEventListener("change", applyFilter);
+            toDateInput.addEventListener("change", applyFilter);
+
+            selectElement.dispatchEvent(new Event("change")); // Initial filtering
+            
+        }
+        fetchData();
 
     </script>
 

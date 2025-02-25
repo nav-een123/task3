@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center bg-pink-200 min-h-screen bg-[url('https://png.pngtree.com/thumb_back/fh260/background/20201101/pngtree-scene-with-geometrical-forms-the-poster-model-minimal-background-render-image_452981.jpg')] bg-cover bg-center">
+    <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-center text-gray-700">Registration Form</h2>
+        <form class="mt-4" onsubmit="return validateForm(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-600" for="name">Full Name</label>
+                <input id="name" type="text" class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200" placeholder="John" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-600" for="email">Email</label>
+                <input id="email" type="email" class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200" placeholder="example@mail.com" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-600" for="contact">Contact Number</label>
+                <input id="contact" type="tel" class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200" placeholder="1234567890" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-600" for="password">Password</label>
+                <input id="password" type="password" class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200" placeholder="••••••••" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-600" for="confirm-password">Confirm Password</label>
+                <input id="confirm-password" type="password" class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200" placeholder="••••••••" required>
+            </div>
+            <div class="mb-4 flex items-center">
+                <input id="terms" type="checkbox" class="mr-2">
+                <label for="terms" class="text-sm text-gray-600">I agree to the <a href="#" class="text-indigo-600 hover:underline">Terms and Conditions</a></label>
+            </div>
+            <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" onclick="submitData()">Register</button>
+        </form>
+        <p class="mt-4 text-sm text-center text-gray-600">Already have an account? <a href="/login" class="text-indigo-600 hover:underline">Login here</a></p>
+    </div>
+    <script>
+        function validateForm(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let contact = document.getElementById("contact").value.trim();
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirm-password").value;
+            let termsCheckbox = document.getElementById("terms").value;
+            
+            if (name === "") {
+                alert("Full Name is required");
+                return false;
+            }
+            
+            let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address");
+                return false;
+            }
+            
+            let contactPattern = /^\d{10}$/;
+            if (!contactPattern.test(contact)) {
+                alert("Contact number must be exactly 10 digits");
+                return false;
+            }
+            
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long");
+                return false;
+            }
+            
+            if (password !== confirmPassword) {
+                alert("Passwords do not match");
+                return false;
+            }
+            
+            if (!termsCheckbox.checked) {
+                // alert("You must agree to the Terms and Conditions before registering.");
+                return false;
+            }
+        
+            
+            alert("Registration successful!");
+            return false;
+        }
+
+
+        //post
+        async function submitData() {
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let contact = document.getElementById("contact").value.trim();
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirm-password").value;
+            
+            if (!name || !email|| !contact || !password|| !confirmPassword) {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            const payload = {
+                name: name,
+                email:email,
+                contact:contact,
+                password: password,
+               confirmPassword: confirmPassword
+    
+            };
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/users", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert("user Created Successfully!");
+                    window.location.href ="/login"
+                
+
+                    // Reset form fields
+                    document.getElementById("name").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("contact").value = "";
+                    document.getElementById("password").value = "";
+                    document.getElementById("confirm-password").value = "";
+                    
+
+                } else {
+                    alert("Error: " + data.detail);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to create user.");
+            }
+        }
+       
+    </script>
+</body>
+</html>

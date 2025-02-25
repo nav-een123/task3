@@ -2,8 +2,7 @@ from api.db.data import users, category_collection,tasks
 from bson import ObjectId
 from fastapi import HTTPException
 from pydantic import BaseModel
-
-
+from api.utils.utils import hash_password,create_access_token
 
 COLLECTIONS = {
     "task":tasks,
@@ -11,38 +10,39 @@ COLLECTIONS = {
     "categery": category_collection
 }
 
-
 def create_document(collection_name: str, payload: BaseModel):
     if collection_name not in COLLECTIONS:
         raise HTTPException(status_code=400, detail="Invalid collection name")
 
-
     collection = COLLECTIONS[collection_name]
     document = payload.dict()
 
-
+    if collection_name == "users":
+        existing_user = users.find_one({  "email":payload.email })
+        if existing_user:
+            raise HTTPException(status_code=400, detail="User already exists!")
+        document["password"] = hash_password(payload.password)
     if "start_time" in document:
         document["start_time"] = (document["start_time"])
     if "end_time" in document:
         document["end_time"] = (document["end_time"])
-
-
     try:
         result = collection.insert_one(document)
         document["_id"] = str(result.inserted_id)
-        return {"message": f"{collection_name.capitalize()} created successfully", "data": document}
+        access_token = None
+        if collection_name == "users":
+            access_token = create_access_token(data={"email": payload.email})
+            
+        return {"message": f"{collection_name.capitalize()} created successfully", "data": document , "token": access_token}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 
 def get_document_by_id(collection_name: str, item_id: str):
     if collection_name not in COLLECTIONS:
         raise HTTPException(status_code=400, detail="Invalid collection name")
 
-
     collection = COLLECTIONS[collection_name]
-
 
     try:
         item = collection.find_one({"_id": ObjectId(item_id)})
@@ -53,16 +53,11 @@ def get_document_by_id(collection_name: str, item_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-
-
 def get_all_documents(collection_name: str):
     if collection_name not in COLLECTIONS:
         raise HTTPException(status_code=400, detail="Invalid collection name")
 
-
     collection = COLLECTIONS[collection_name]
-
 
     try:
         documents = list(collection.find({}))
@@ -74,26 +69,18 @@ def get_all_documents(collection_name: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-
-
 def update_document(collection_name: str, item_id: str, payload: BaseModel):
     if collection_name not in COLLECTIONS:
         raise HTTPException(status_code=400, detail="Invalid collection name")
 
-
     collection = COLLECTIONS[collection_name]
     update_data = payload.dict(exclude_unset=True)
-
 
     try:
         update_result = collection.update_one({"_id": ObjectId(item_id)}, {"$set": update_data})
 
-
         if update_result.matched_count == 0:
             raise HTTPException(status_code=404, detail=f"{collection_name.capitalize()} not found")
-
-
         return {"message": f"{collection_name.capitalize()} updated successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -104,9 +91,7 @@ def delete_document(collection_name: str, item_id: str):
     if collection_name not in COLLECTIONS:
         raise HTTPException(status_code=400, detail="Invalid collection name")
 
-
     collection = COLLECTIONS[collection_name]
-
 
     try:
         result = collection.delete_one({"_id": ObjectId(item_id)})
@@ -114,7 +99,6 @@ def delete_document(collection_name: str, item_id: str):
 
         if result.deleted_count == 0:
             raise HTTPException(status_code=404, detail=f"{collection_name.capitalize()} not found")
-
 
         return {"message": f"{collection_name.capitalize()} deleted successfully"}
     except Exception as e:
