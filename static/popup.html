@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup</title>
+    <style>
+        /* General form styling */
+        body {
+            width: 300px;
+            height: 200;
+            /* margin: 50px auto; */
+            padding: 20px;
+            /* border: 1px solid #ccc;
+            border-radius: 8px; */
+            background-color: #f9f9f9;
+            /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+        }
+
+        h2{
+            text-align: center;
+            font-style: bold;
+        }
+  
+        /* Label styling */
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-top: 2px;
+        }
+
+        /* Input, Select, and Textarea styling */
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #fff;
+        }
+
+        /* Button container */
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+
+        /* Button styling */
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        #closeModal {
+            background-color: #e74c3c;
+        }
+
+        #closeModal:hover {
+            background-color: #c0392b;
+        }
+
+        #submitBtn {
+            background-color: #2ecc71;
+        }
+
+        #submitBtn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+
+<body>
+   <form>
+        <h2>Task creation</h2>
+        <!-- Date Input -->
+        <label for="dateInput">Select Date:</label>
+        <input type="date" id="dateInput" name="date">
+
+        <!-- From Time -->
+        <label for="fromTime">From Time:</label>
+        <input type="time" id="fromTime" name="from_time">
+
+        <!-- To Time -->
+        <label for="toTime">To Time:</label>
+        <input type="time" id="toTime" name="to_time">
+
+        <!-- Select Category -->
+        <label for="selectInput">Select Category:</label>
+        <select id="selectInput" name="category">
+            <!-- <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Other">Other</option> -->
+        </select>
+
+        <!-- Task Input -->
+        <label for="etask">Task:</label>
+        <input type="text" id="etask" name="task">
+
+        <!-- Description -->
+        <label for="taskNote">Description:</label>
+        <textarea id="taskNote" rows="3" placeholder="Add a note about the task..."></textarea>
+
+        <!-- Buttons -->
+        <div class="form-buttons">
+            <button id="closeModal" type="button">Close</button>
+            <button id="submitBtn" type="submit">Submit</button>
+        </div>
+   </form>
+    <!-- <button id="clickMe">Click Me</button> -->
+    <script src="popup.js"></script>
+</body>
+
+</html>

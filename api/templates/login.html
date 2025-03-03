@@ -10,34 +10,43 @@
 
 <body
     class="flex items-center justify-center min-h-screen bg-[url('https://images.squarespace-cdn.com/content/v1/619541f73704307b87772a18/c9a4a04a-b367-4e4a-9481-f2f6570da369/lukas-blazek-GnvurwJsKaY-unsplash.png')] bg-cover bg-center">
-    <div class="w-full max-w-lg p-6 bg-white rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold text-center text-gray-700">Login</h2>
-        <form class="mt-4" id="loginForm">
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-600" for="email">Email</label>
-                <input id="email" type="email"
-                    class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200"
-                    placeholder="example@mail.com" required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-600" for="password">Password</label>
-                <input id="password" type="password"
-                    class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200"
-                    placeholder="••••••••" required>
-            </div>
-            <div class="mb-4 flex items-center">
-                <input id="terms" type="checkbox" class="mr-2">
-                <label for="terms" class="text-sm text-gray-600">I agree to the <a href="#" class="text-indigo-600 hover:underline">Terms and Conditions</a></label>
-            </div>
-            <button type="submit"
-                class="w-full px-4 py-2 font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                Login
-            </button>
-        </form>
-        <p class="mt-4 text-sm text-center text-gray-600">
-            Don't have an account? <a href="/" class="text-indigo-600 hover:underline">Register here</a>
-        </p>
-        <p id="errorMessage" class="text-red-400 mt-4"></p>
+    <div class="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden flex">
+        <!-- Left Side Image -->
+        <div class="w-1/2 bg-purple-500 flex items-center justify-center p-8 ">
+            <img src="data:image/jpeg;base64,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"
+                alt="Illustration" class="rounded-lg h-200 w-200">
+        </div>
+
+        <div class="w-full max-w-lg p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-center text-gray-700">Login</h2>
+            <form class="mt-4" id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-600" for="email">Email</label>
+                    <input id="email" type="email"
+                        class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200"
+                        placeholder="example@mail.com" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-600" for="password">Password</label>
+                    <input id="password" type="password"
+                        class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-200"
+                        placeholder="••••••••" required>
+                </div>
+                <div class="mb-4 flex items-center">
+                    <input id="terms" type="checkbox" class="mr-2">
+                    <label for="terms" class="text-sm text-gray-600">I agree to the <a href="#"
+                            class="text-indigo-600 hover:underline">Terms and Conditions</a></label>
+                </div>
+                <button type="submit"
+                    class="w-full px-4 py-2 font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Login
+                </button>
+            </form>
+            <p class="mt-4 text-sm text-center text-gray-600">
+                Don't have an account? <a href="/" class="text-indigo-600 hover:underline">Register here</a>
+            </p>
+            <p id="errorMessage" class="text-red-400 mt-4"></p>
+        </div>
     </div>
 
     <script>
@@ -48,7 +57,7 @@
             let password = document.getElementById("password").value;
             let errorMessage = document.getElementById("errorMessage");
             let termsCheckbox = document.getElementById("terms").value;
-            
+
             errorMessage.textContent = "";
 
             // Email validation
@@ -79,8 +88,8 @@
 
                 if (response.ok) {
                     localStorage.setItem("access_token", data.access_token);
-                    localStorage.setItem("firstname",data.firstname);
-                    localStorage.setItem("email",data.email);
+                    localStorage.setItem("firstname", data.firstname);
+                    localStorage.setItem("email", data.email);
                     document.cookie = `access_token=${data.access_token}; path=/; expires=Fri, 21 Feb 2025 12:00:00 UTC; Secure; SameSite=Strict`;
                     Authorize();
                 } else {
@@ -98,7 +107,7 @@
                 return acc;
             }, {});
 
-        const access_token = cookies.access_token
+            const access_token = cookies.access_token
             try {
                 const response = await fetch("http://127.0.0.1:8000/protect", {
                     method: "GET",

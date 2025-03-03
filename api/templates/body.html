@@ -12,7 +12,7 @@
 
     <div>
         <main class="flex-1 p-6">
-            <div class="flex justify-between items-center px-9">
+            <div class="flex justify-between items-center px-8">
                 <h1 class="text-2xl font-semibold" id="greeting"></h1>
                 <div class="flex items-center space-x-2">
                     <!-- Filter Dropdown -->
@@ -21,20 +21,11 @@
                             <option value="option1">Today</option>
                             <option value="option2">Tomorrow</option>
                             <option value="option3">Yesterday</option>
-                            <option value="custom">Custom</option>
                             <option value="option4">Default</option>
                         </select>
 
 
                     </button>
-                    <div id="customDateContainer" style="display: none; margin-top: 10px;">
-                        <form>
-                        <label>From: <input type="date" id="fromDate"
-                                class="w-full p-2 mt-1 border rounded-md"></label><br>
-                        <label>To: <input type="date" id="toDate" class="w-full p-2 mt-1 border rounded-md"></label>
-                        </form>
-                    </div>
-
 
                     <!-- Menu Button -->
                     <div class="relative">
@@ -61,8 +52,32 @@
                     id="openModal">
                     create new task
                 </button>
-                <!-- <button class="border rounded-lg bg-green-500 h-10 w-60 mt-4 mr-80 mb-4" onclick="fetchData()">Get
-                    Data</button> -->
+                <button id="filterBtn"
+                    class="border rounded-lg bg-slate-500 h-10 w-10 mt-4 mr-80 mb-4 mx-4 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707L14 12.414V19a1 1 0 01-.553.894l-4 2A1 1 0 018 21v-8.586L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                </button>
+
+
+                <div id="popup" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+                        <h2 class="text-xl font-semibold mb-4">Filter by Date</h2>
+                        <label class="block text-sm font-medium">From Date</label>
+                        <input type="date" id="fromDate" class="border rounded-lg w-full p-2 mb-4">
+
+                        <label class="block text-sm font-medium">To Date</label>
+                        <input type="date" id="toDate" class="border rounded-lg w-full p-2 mb-4">
+
+                        <div class="flex justify-between">
+                            <button id="closeBtn" class="px-4 py-2 bg-gray-400 rounded-lg text-white">Cancel</button>
+                            <button id="applyBtn" class="px-4 py-2 bg-green-500 rounded-lg text-white">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <!-- Popup Modal -->
             <div id="modal" class="hidden fixed inset-0 flex items-center justify-center  bg-opacity-50 bg-gray-900">
@@ -142,9 +157,9 @@
         function getGreeting() {
             const hours = new Date().getHours();
             let greeting = `Hi!, ${firstName}`;
-            if (hours >= 5 && hours < 12) greeting = `Good Morning, ${firstName}! 👋`;
-            else if (hours >= 12 && hours < 16) greeting = `Good Afternoon, ${firstName}! 👋`;
-            else if (hours >= 16 && hours < 21) greeting = `Good Evening, ${firstName}! 👋`;
+            if (hours >= 5 && hours < 12) greeting = `Hi Good Morning, ${firstName}! 👋`;
+            else if (hours >= 12 && hours < 16) greeting = `Hi Good Afternoon, ${firstName}! 👋`;
+            else if (hours >= 16 && hours < 21) greeting = `Hi Good Evening, ${firstName}! 👋`;
             greetingText.textContent = greeting;
         }
         getGreeting();
@@ -326,6 +341,19 @@
             }
         }
 
+        window.addEventListener("message", (event) => {
+            if (event.data.action === "updateTable") {
+                console.log("✅ Received updated tasks in body.html:", event.data.tasks);
+                Table(event.data.tasks); // Call function to update UI
+            }
+        });
+
+        // // Ensure UI updates automatically when extension is opened
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     chrome.runtime.sendMessage({ action: "fetchData" });
+        // });
+
+
         function Table(data) {
             let table = document.getElementById("dataTableBody");
             table.innerHTML = data.map((item, index) => `
@@ -367,11 +395,14 @@
                 const row = document.getElementById(`row-${taskId}`);
                 if (row) {
                     row.remove();
+                    fetchData();
                 }
             } catch (error) {
                 console.error('Error deleting task:', error);
             }
         }
+
+
 
         // Open Modal for Creating a New Task (Clears Fields)
         document.getElementById("openModal").addEventListener("click", function () {
@@ -442,8 +473,8 @@
         document.addEventListener("DOMContentLoaded", function () {
             let apiUrl = "http://127.0.0.1:8000/task";
             let listContainer = document.getElementById("selectInput");
-            let existingCategories = new Set(); // Track existing items to prevent duplicates
-            let selectInput = document.getElementById("selectInput"); // Reference to the select element
+            let existingCategories = new Set();
+            let selectInput = document.getElementById("selectInput");
 
             function fetchAndUpdate() {
                 fetch(apiUrl)
@@ -464,10 +495,6 @@
                                 listItem.className = "flex items-center justify-between hover:bg-red-100 rounded-lg h-15 w-100 py-2";
                                 listItem.innerHTML = `
                             <span class="flex items-center gap-2 ml-6 font-semibold ">${category?.name}</span>
-                            <div>
-                                <button class="mr-10" onclick="updateCategory('${category._id}', this)"> ✏️</button>
-                                <button class="mr-40" onclick="deleteCategory('${category._id}', this)">🗑️</button>
-                            </div>
                            
                         `;
 
@@ -488,7 +515,7 @@
             }
 
             fetchAndUpdate(); // Initial call
-           
+
         });
 
 
@@ -509,9 +536,6 @@
 
         function filterTasks(tasks) {
             let selectElement = document.getElementById("inputselect");
-            let customDateContainer = document.getElementById("customDateContainer");
-            let fromDateInput = document.getElementById("fromDate");
-            let toDateInput = document.getElementById("toDate");
 
             function applyFilter() {
                 let selectedValue = selectElement.value;
@@ -532,33 +556,55 @@
                     if (selectedValue === "option1") return taskDate === today;
                     if (selectedValue === "option2") return taskDate === formattedTomorrow;
                     if (selectedValue === "option3") return taskDate === formattedYesterday;
-                    if (selectedValue === "custom" && fromDateInput.value && toDateInput.value)
-                        return taskDate >= fromDateInput.value && taskDate <= toDateInput.value;
                     return true;
                 });
 
                 Table(filteredTasks);
             }
 
-            selectElement.addEventListener("change", function () {
-                if (selectElement.value === "custom") {
-                    customDateContainer.style.display = "inline";
-                } else {
-                    customDateContainer.style.display = "none";
-                    fromDateInput.value = "";
-                    toDateInput.value = "";
-                }
-                applyFilter();
-                
-            });
-
-            fromDateInput.addEventListener("change", applyFilter);
-            toDateInput.addEventListener("change", applyFilter);
-
+            selectElement.addEventListener("change", applyFilter);
             selectElement.dispatchEvent(new Event("change")); // Initial filtering
-            
         }
+
         fetchData();
+
+        //filter by range of dates
+        document.getElementById("filterBtn").addEventListener("click", function () {
+            document.getElementById("popup").classList.remove("hidden");
+        });
+
+        document.getElementById("closeBtn").addEventListener("click", function () {
+            document.getElementById("popup").classList.add("hidden");
+        });
+
+        document.getElementById("applyBtn").addEventListener("click", function () {
+            let fromDate = document.getElementById("fromDate").value;
+            let toDate = document.getElementById("toDate").value;
+
+            if (!fromDate || !toDate) {
+                alert("Please select both From Date and To Date.");
+                return;
+            }
+
+            fetchDataWithFilter(fromDate, toDate);
+            document.getElementById("popup").classList.add("hidden");
+        });
+
+        async function fetchDataWithFilter(fromDate, toDate) {
+            try {
+                let response = await fetch("http://127.0.0.1:8000/categery/");
+                let fetchresponse = await response.json();
+
+                let filteredData = fetchresponse.data.filter(item => {
+                    return item.date >= fromDate && item.date <= toDate;
+                });
+
+                Table(filteredData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
 
     </script>
 
