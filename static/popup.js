@@ -3,17 +3,17 @@
 // });
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Set default date to today
-    let today = new Date().toISOString().split('T')[0];
-    document.getElementById("dateInput").value = today;
+        // Set default date to today
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById("dateInput").value = today;
 
-    // Set default time to the current time
-    let now = new Date();
-    let hours = now.getHours().toString().padStart(2, '0');
-    let minutes = now.getMinutes().toString().padStart(2, '0');
-    let currentTime = `${hours}:${minutes}`;
-    document.getElementById("fromTime").value = currentTime;
-});
+        // Set default time to the current time
+        let now = new Date();
+        let hours = now.getHours().toString().padStart(2, '0');
+        let minutes = now.getMinutes().toString().padStart(2, '0');
+        let currentTime = `${hours}:${minutes}`;
+        document.getElementById("fromTime").value = currentTime;
+    });
 
 document.getElementById("submitBtn").addEventListener("click", submitData);
 // fetch post method

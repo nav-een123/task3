@@ -96,7 +96,6 @@
                 .then(data => {
                     alert("Category added successfully!");
                     document.getElementById("categoryInput").value = ""; // Clear input field
-                    fetchAndUpdate();
                 })
                 .catch(error => {
                     console.error("Error:", error);

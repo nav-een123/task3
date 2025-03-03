@@ -344,7 +344,7 @@
         window.addEventListener("message", (event) => {
             if (event.data.action === "updateTable") {
                 console.log("✅ Received updated tasks in body.html:", event.data.tasks);
-                Table(event.data.tasks); // Call function to update UI
+                filterTasks(event.data.tasks); // Call function to update UI
             }
         });
 
