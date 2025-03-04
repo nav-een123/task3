@@ -3,17 +3,21 @@
 // });
 
 document.addEventListener("DOMContentLoaded", function () {
-        // Set default date to today
-        let today = new Date().toISOString().split('T')[0];
-        document.getElementById("dateInput").value = today;
+    // Set default date to today
+    let today = new Date().toISOString().split('T')[0];
+    document.getElementById("dateInput").value = today;
 
-        // Set default time to the current time
-        let now = new Date();
-        let hours = now.getHours().toString().padStart(2, '0');
-        let minutes = now.getMinutes().toString().padStart(2, '0');
-        let currentTime = `${hours}:${minutes}`;
-        document.getElementById("fromTime").value = currentTime;
-    });
+    // Set default time to the current time
+    let now = new Date();
+    let hours = now.getHours().toString().padStart(2, '0');
+    let minutes = now.getMinutes().toString().padStart(2, '0');
+    let currentTime = `${hours}:${minutes}`;
+    document.getElementById("fromTime").value = currentTime;
+});
+
+document.getElementById("closeModal").addEventListener("click", function () {
+    document.getElementById("modal").style.display = "none";
+});
 
 document.getElementById("submitBtn").addEventListener("click", submitData);
 // fetch post method
@@ -51,7 +55,7 @@ async function submitData() {
         const data = await response.json();
         if (response.ok) {
             alert("Task Created Successfully!");
-            
+
             // Reset form fields
             document.getElementById("dateInput").value = "";
             document.getElementById("fromTime").value = "";
@@ -60,7 +64,7 @@ async function submitData() {
             document.getElementById("etask").value = "";
             document.getElementById("taskNote").value = "";
 
-    
+
             // Request updated tasks from background.js
             chrome.runtime.sendMessage({ action: "fetchData" }, (response) => {
                 console.log("🔄 Updated tasks requested after new task submission", response.data);
@@ -104,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(responseData => {
                 console.log("API Response:", responseData);
 
-                let categories = responseData?.data;
+                let categories = responseData.data;
 
                 if (!Array.isArray(categories)) {
                     console.error("Expected an array but got:", categories);
@@ -112,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 categories.forEach(category => {
-                    if (!existingCategories.has(category.name)) { 
+                    if (!existingCategories.has(category.name)) {
                         let listItem = document.createElement("li");
                         listItem.className = "flex items-center justify-between hover:bg-red-100 rounded-lg h-15 w-100 py-2";
                         listItem.innerHTML = `

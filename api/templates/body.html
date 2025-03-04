@@ -348,11 +348,6 @@
             }
         });
 
-        // // Ensure UI updates automatically when extension is opened
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     chrome.runtime.sendMessage({ action: "fetchData" });
-        // });
-
 
         function Table(data) {
             let table = document.getElementById("dataTableBody");
@@ -480,7 +475,7 @@
                 fetch(apiUrl)
                     .then(response => response.json())
                     .then(responseData => {
-                        console.log("API Response:", responseData);
+                        // console.log("API Response:", responseData);
 
                         let categories = responseData?.data;
 
